@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href="css/style.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-toggle.css" rel="stylesheet">
+<body>
+	<svg id="svg" transform="translate(0,0)">
+		<circle id="back_circle" cx="300" cy="300" r="300" fill="white" stroke="black" stroke-width="3" />
+		<g id="circle_chart">
+			<circle id="circle1"></circle>
+			<circle id="circle2"></circle>
+			<circle id="circle3"></circle>
+		</g>
+        <g>
+            <rect id="rect1"></rect>
+            <rect id="rect2"></rect>
+            <rect id="rect3"></rect>
+        </g>
+        <g id="hexagon_chart">
+            <polygon id="hexagon1"></polygon>
+            <polygon id="hexagon2"></polygon>
+            <polygon id="hexagon3"></polygon>
+        </g>
+        <g id="star_chart">
+            <polygon id="star1"></polygon>
+            <polygon id="star2"></polygon>
+            <polygon id="star3"></polygon>
+        </g>
+	</svg>
+</body>
+<script src="js/jquery-git2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="js/bootstrap-toggle.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/Circle.js"></script>
+<script src="js/Rect.js"></script>
+<script src="js/Hexagon.js"></script>
+<script src="js/Star.js"></script>
+<script>
+
+//Circle Variable
+	var circle_color = '#56cbf5';
+    var circle_rate = 14;
+    var circles;
+
+//Rect Variable
+    var rect_color = '#b0dcc0';
+    var rects;
+    var rect_width_rate = 7;
+    var rect_height_rate = 7;
+
+//Hexagon Variable
+    var hexagon_color = '#e49325';
+    var hexagon_rate = 12;
+    var hexagons;
+
+//Star Variable
+    var star_color = '#ec1941';
+    var star_rate = 12;
+    var stars;
+
+
+    var CX, CY, R;
+	var PI = 3.141592;
+	var myTimer;
+
+	function draw(){
+		var i;
+    	for(i = 0; i < circles.length; i++){
+    		circles[i].draw();
+    	}
+        for(i = 0; i < rects.length; i++){
+            rects[i].draw();
+        }
+        for(i = 0; i < hexagons.length; i++){
+            hexagons[i].draw();
+        }
+        for(i = 0; i < stars.length; i++){
+            stars[i].draw();
+        }
+	}
+
+    function convertPN(num){
+        if(num > 0) return 1;
+        return -1;
+    }
+
+    function Init(){
+
+		// clearInterval(myTimer);
+
+    	var r = Math.min(parseInt($('#svg').css('width')),parseInt($('#svg').css('height')))/2;
+    	var cx = cy = r;
+        r -= 5;
+        CX = CY = cx;
+        R = r;
+    	$('#back_circle').attr('cx',cx);
+    	$('#back_circle').attr('cy',cy);
+    	$('#back_circle').attr('r',r);
+    	console.log(cx+":"+cy+":"+r);
+
+    	// Circle Chart
+    	circles = [];
+
+		var circle = new Circle();
+    	circle.cx = cx - r/2*Math.cos(PI/4);
+    	circle.cy = cy - r/2*Math.sin(PI/4);
+    	circle.r = r/circle_rate;
+    	circle.color = circle_color;
+    	circles.push(circle);
+
+		var circle = new Circle();
+    	circle.cx = cx;
+    	circle.cy = cy + r/3*2;
+    	circle.r = r/circle_rate;
+    	circle.color = circle_color;
+    	circles.push(circle);
+
+		var circle = new Circle();
+    	circle.cx = cx + r/3*2*Math.cos(PI/4);
+    	circle.cy = cy - r/3*2*Math.sin(PI/4);
+    	circle.r = r/circle_rate;
+    	circle.color = circle_color;
+    	circles.push(circle);
+    	for(i = 0; i < circles.length; i++){
+    		circles[i].id = i+1;
+            circles[i].opacity = parseInt(Math.random()*10)/10;
+            circles[i].rate_opacity = parseInt(Math.random()*10+1)/1000;
+            circles[i].dir_x = convertPN(parseInt(Math.random()*10)%2);
+            circles[i].dir_y = convertPN(parseInt(Math.random()*10)%2);
+            circles[i].speed_x = parseInt(Math.random()*100+50)/500;
+            circles[i].speed_y = parseInt(Math.random()*100+50)/500;
+    	}
+
+
+        //Rect Chart
+        
+        rects = [];
+
+        var rect = new Rect();
+        rect.x = cx;
+        rect.y = cy - r/2;
+        rect.width = r/rect_width_rate;
+        rect.height = r/rect_height_rate;
+        rect.color = rect_color;
+        rects.push(rect);
+
+        var rect = new Rect();
+        rect.x = cx + r/2*Math.cos(PI/4);
+        rect.y = cy + r/2*Math.sin(PI/4);
+        rect.width = r/rect_width_rate;
+        rect.height = r/rect_height_rate;
+        rect.color = rect_color;
+        rects.push(rect);
+
+        var rect = new Rect();
+        rect.x = cx - r/3*2*Math.cos(PI/4);
+        rect.y = cy + r/3*2*Math.sin(PI/4);
+        rect.width = r/rect_width_rate;
+        rect.height = r/rect_height_rate;
+        rect.color = rect_color;
+        rects.push(rect);
+        for(i = 0; i < rects.length; i++){
+            rects[i].id = i+1;
+            rects[i].opacity = parseInt(Math.random()*10)/10;
+            rects[i].rate_opacity = parseInt(Math.random()*10+1)/1000;
+            rects[i].dir_x = convertPN(parseInt(Math.random()*10)%2);
+            rects[i].dir_y = convertPN(parseInt(Math.random()*10)%2);
+            rects[i].speed_x = parseInt(Math.random()*100+50)/500;
+            rects[i].speed_y = parseInt(Math.random()*100+50)/500;
+        }
+
+        // Hexagon Chart
+        hexagons = [];
+
+        var hexagon = new Hexagon();
+        hexagon.cx = cx - r/6*Math.cos(PI/6);
+        hexagon.cy = cy + r/6*Math.sin(PI/6);
+        hexagon.r = r/hexagon_rate;
+        hexagon.color = hexagon_color;
+        hexagons.push(hexagon);
+
+        var hexagon = new Hexagon();
+        hexagon.cx = cx + r/3*2;
+        hexagon.cy = cy;
+        hexagon.r = r/hexagon_rate;
+        hexagon.color = hexagon_color;
+        hexagons.push(hexagon);
+
+        var hexagon = new Hexagon();
+        hexagon.cx = cx + r/4*3*Math.cos(PI/3);
+        hexagon.cy = cy + r/4*3*Math.sin(PI/3);
+        hexagon.r = r/hexagon_rate;
+        hexagon.color = hexagon_color;
+        hexagons.push(hexagon);
+
+        for(i = 0; i < hexagons.length; i++){
+            hexagons[i].id = i+1;
+            hexagons[i].opacity = parseInt(Math.random()*10)/10;
+            hexagons[i].rate_opacity = parseInt(Math.random()*10+1)/1000;
+            hexagons[i].dir_x = convertPN(parseInt(Math.random()*10)%2);
+            hexagons[i].dir_y = convertPN(parseInt(Math.random()*10)%2);
+            hexagons[i].speed_x = parseInt(Math.random()*100+50)/500;
+            hexagons[i].speed_y = parseInt(Math.random()*100+50)/500;
+        }
+
+        // Star Chart
+        stars = [];
+
+        var star = new Star();
+        star.cx = cx - r/4*3*Math.cos(PI/3);
+        star.cy = cy - r/4*3*Math.sin(PI/3);
+        star.r = r/star_rate;
+        star.color = star_color;
+        stars.push(star);
+
+        var star = new Star();
+        star.cx = cx - r/3*2;
+        star.cy = cy;
+        star.r = r/star_rate;
+        star.color = star_color;
+        stars.push(star);
+
+        var star = new Star();
+        star.cx = cx + r/6*Math.cos(PI/6);
+        star.cy = cy - r/6*Math.sin(PI/6);
+        star.r = r/star_rate;
+        star.color = star_color;
+        stars.push(star);
+
+        for(i = 0; i < stars.length; i++){
+            stars[i].id = i+1;
+            stars[i].opacity = parseInt(Math.random()*10)/10;
+            stars[i].rate_opacity = parseInt(Math.random()*10+1)/1000;
+            stars[i].dir_x = convertPN(parseInt(Math.random()*10)%2);
+            stars[i].dir_y = convertPN(parseInt(Math.random()*10)%2);
+            stars[i].speed_x = parseInt(Math.random()*100+50)/500;
+            stars[i].speed_y = parseInt(Math.random()*100+50)/500;
+        }
+
+
+    	draw();
+    }
+
+    function OnTimer(){
+		var i;
+    	for(i = 0; i < circles.length; i++){
+    		circles[i].onTimer();
+    	}
+        for(i = 0; i < circles.length; i++){
+            rects[i].onTimer();
+        }
+        for(i = 0; i < hexagons.length; i++){
+            hexagons[i].onTimer();
+        }
+        for(i = 0; i < stars.length; i++){
+            stars[i].onTimer();
+        }
+    }
+
+	$(document).ready(function(){
+        myTimer = setInterval(function(){ OnTimer() }, 38);
+		Init();
+	});
+
+	$(window).resize(function(){
+		Init();
+	})
+
+</script>

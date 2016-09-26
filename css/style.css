@@ -1,0 +1,39 @@
+#svg{
+	width: 800px;
+	height: 800px;
+	margin:30px auto;
+	display:block;
+}
+#toggle_btn{
+	display: block;
+    margin: 30px auto;
+    width: 170px;
+}
+#bt{
+	width: 80px;
+	display:block;
+}
+@media (max-width: 1200px) {
+	#svg{
+		width: 600px;
+		height: 600px;
+	}
+}
+@media (max-width: 800px) {
+	#svg{
+		width: 400px;
+		height: 400px;
+	}
+}
+@media (max-width: 600px) {
+	#svg{
+		width: 300px;
+		height: 300px;
+	}
+}
+@media (max-width: 400px) {
+	#svg{
+		width: 200px;
+		height: 200px;
+	}
+}
